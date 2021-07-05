@@ -81,6 +81,7 @@ final class LocationPickerViewController: UIViewController {
         return $0
     }(MKMapView())
     
+    @available(iOS 11.0, *)
     lazy var scaleView: MKScaleView = {
         $0.scaleVisibility = .visible
         return $0
@@ -129,14 +130,16 @@ final class LocationPickerViewController: UIViewController {
         let _ = searchController.view
 	}
 	
-	open override func loadView() {
+    public override func loadView() {
 		view = mapView
 	}
 	
-	open override func viewDidLoad() {
+    public override func viewDidLoad() {
 		super.viewDidLoad()
 		
-        mapView.addSubview(scaleView)
+        if #available(iOS 11.0, *) {
+            mapView.addSubview(scaleView)
+        }
         mapView.addSubview(locationButton)
         
 		locationManager.delegate = self
@@ -167,7 +170,7 @@ final class LocationPickerViewController: UIViewController {
 	
 	var presentedInitialLocation = false
 	
-    override open func viewWillLayoutSubviews() {
+    override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         searchView.frame = CGRect(x: 8, y: 8, width: view.width - 16, height: 57)
         //searchController.searchBar.sizeToFit()
@@ -176,7 +179,7 @@ final class LocationPickerViewController: UIViewController {
         
     }
     
-    override open func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
         preferredContentSize.height = UIScreen.main.bounds.height
         
